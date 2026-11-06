@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cashflip - Assistente IA empresarial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="css/responsivo.css" rel="stylesheet" />
+    <script src="js/api-config.js"></script>
+    <style>
+      .btn-cornalina { background-color: #B31B1B; color: white; border: none; }
+      .btn-cornalina:hover { background-color: #8a1515; color: white; }
+      .borda-cornalina { border-top: 4px solid #B31B1B !important; }
+      .chat-box { min-height: 320px; max-height: 60vh; overflow-y: auto; background-color: #121212; border-radius: 5px; padding: 15px; }
+    </style>
+  </head>
+  <body class="bg-black">
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand text-white" href="inicial.html">Cashflip</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAssistente" aria-controls="navbarAssistente" aria-expanded="false" aria-label="Abrir navegação">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarAssistente">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="despesas.html">Despesas</a></li>
+            <li class="nav-item"><a class="nav-link" href="recebimentos.html">Recebimentos</a></li>
+            <li class="nav-item"><a class="nav-link" href="grafico.html">Gráficos</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="assistente-empresarial.html">Assistente IA</a></li>
+          </ul>
+          <span id="nomeEmpresa" class="navbar-text me-3"></span>
+          <a id="linkSair" class="nav-link" href="login-empresarial.html">Sair</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+          <section class="card bg-dark shadow border-0 borda-cornalina">
+            <div class="card-body p-4 p-md-5">
+              <p class="text-danger small mb-1">ÁREA EMPRESARIAL</p>
+              <h1 class="h3 mb-2">Assistente IA</h1>
+              <p class="text-secondary mb-4">Converse sobre as despesas e os recebimentos da empresa.</p>
+              <div class="chat-box mb-3" id="chatEmpresarial" aria-live="polite">
+                <div class="text-secondary small mb-2">IA Cashflip:</div>
+                <div class="bg-secondary p-2 rounded mb-3 d-inline-block text-white">Olá! Posso ajudar a analisar as despesas e os recebimentos da empresa.</div>
+              </div>
+              <div id="avisoIAEmpresarial" class="alert d-none py-2" role="alert"></div>
+              <form id="formIAEmpresarial">
+                <label for="perguntaIAEmpresarial" class="form-label">Sua pergunta</label>
+                <div class="input-group">
+                  <input id="perguntaIAEmpresarial" maxlength="2000" class="form-control" placeholder="Pergunte sobre as finanças..." required>
+                  <button id="enviarIAEmpresarial" class="btn btn-cornalina" type="submit">Enviar</button>
+                </div>
+              </form>
+              <div class="small text-secondary mt-2">Ex.: Qual é o meu saldo? Como posso reduzir despesas?</div>
+              <div class="small text-secondary mt-3">Os dados financeiros usados na análise são enviados ao Google Gemini para gerar a resposta. Configure GEMINI_API_KEY no ambiente do backend.</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/assistente-empresarial.js"></script>
+    <script src="js/notificacoes.js" data-modo="empresarial"></script>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projeto-Cashflip - Despesas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="css/responsivo.css" rel="stylesheet" />
+    <script src="js/api-config.js"></script>
+    <style>
+      .btn-cornalina { background-color: #B31B1B; color: white; border: none; }
+      .btn-cornalina:hover { background-color: #8a1515; color: white; }
+      .text-cornalina { color: #B31B1B; }
+    </style>
+  </head>
+  <body class="bg-black">
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand text-white" href="inicial.html">Cashflip</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="despesas.html">Despesas</a></li>
+            <li class="nav-item"><a id="linkRecebimentos" class="nav-link d-none" href="recebimentos.html">Recebimentos</a></li>
+            <li class="nav-item"><a class="nav-link" href="grafico.html">Gráficos</a></li>
+            <li class="nav-item"><a id="linkAssistenteEmpresa" class="nav-link d-none" href="assistente-empresarial.html">Assistente IA</a></li>
+          </ul>
+          <div class="d-flex flex-column flex-lg-row align-items-lg-center">
+            <span id="nomeEmpresa" class="navbar-text me-lg-3 d-none"></span>
+            <a id="linkSair" class="nav-link" href="index.html">Sair</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="card bg-dark shadow-lg border-0 mb-4">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Gerenciar Despesas</h4>
+          
+          <div id="mensagemApi" class="alert d-none" role="alert"></div>
+
+          <form id="formDespesa" class="row g-3 mb-4 border-bottom border-secondary pb-4">
+            <div class="col-md-4">
+              <label for="descricao" class="form-label">Descrição</label>
+              <input type="text" class="form-control" id="descricao" placeholder="Ex: Supermercado" maxlength="200" required>
+            </div>
+            <div class="col-md-3">
+              <label for="categoriaId" class="form-label">Categoria</label>
+              <select class="form-select" id="categoriaId" required>
+                <option value="">Carregando categorias...</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label for="valor" class="form-label">Valor (R$)</label>
+              <input type="number" class="form-control" id="valor" placeholder="0,00" min="0.01" step="0.01" required>
+            </div>
+            <div class="col-md-2">
+              <label for="vencimento" class="form-label">Vencimento</label>
+              <input type="date" class="form-control" id="vencimento" required>
+            </div>
+            <div class="col-md-2">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" id="status" required>
+                <option value="Pendente">Pendente</option>
+                <option value="Pago">Pago</option>
+              </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end gap-2">
+              <button id="botaoSalvar" type="submit" class="btn btn-cornalina flex-grow-1">Cadastrar despesa</button>
+              <button id="botaoCancelar" type="button" class="btn btn-outline-light d-none">Cancelar</button>
+            </div>
+          </form>
+
+          <!-- Tabela de Listagem -->
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Descrição</th>
+                  <th>Categoria</th>
+                  <th>Data</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                  <th class="text-end">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaDespesas">
+                <tr><td colspan="6" class="text-secondary text-center">Carregando despesas...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/despesas.js"></script>
+    <script src="js/notificacoes.js" data-modo="empresarial"></script>
+  </body>
+</html>

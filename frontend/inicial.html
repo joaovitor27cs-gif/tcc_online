@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Conheça o Cashflip: uma forma simples de organizar despesas, recebimentos e acompanhar a saúde financeira." />
+    <title>Cashflip - Controle financeiro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="css/responsivo.css" rel="stylesheet" />
+    <script src="js/api-config.js"></script>
+    <style>
+      :root { --cashflip-red: #b31b1b; --cashflip-panel: #151719; }
+      body { background: #08090a; }
+      .navbar { background-color: #1f2225; }
+      .btn-cornalina { background-color: var(--cashflip-red); color: white; border: none; }
+      .btn-cornalina:hover { background-color: #941616; color: white; }
+      .hero { min-height: 390px; background: radial-gradient(ellipse at 15% 10%, rgba(179, 27, 27, .19), transparent 50%), #0b0c0e; }
+      .eyebrow { color: #f08080; letter-spacing: .12em; text-transform: uppercase; }
+      .feature-card { background-color: var(--cashflip-panel); border: 1px solid rgba(255,255,255,.08); }
+      .feature-number { color: #f08080; font-size: .9rem; letter-spacing: .1em; }
+      .feature-image { width: 100%; height: 100%; min-height: 300px; max-height: 410px; object-fit: cover; }
+      .benefit-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: rgba(179,27,27,.18); color: #ff8b8b; font-weight: 700; }
+      .cta-panel { background: linear-gradient(120deg, rgba(179,27,27,.2), rgba(21,23,25,.96) 60%); }
+      footer { border-top: 1px solid rgba(255,255,255,.1); }
+      @media (max-width: 767.98px) {
+        .hero { min-height: auto; }
+        .feature-image { min-height: 240px; max-height: 320px; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom border-secondary sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="inicial.html">Cashflip</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navegacao" aria-controls="navegacao" aria-expanded="false" aria-label="Abrir navegação">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navegacao">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="#recursos">Recursos</a></li>
+            <li class="nav-item"><a class="nav-link" href="despesas.html">Despesas</a></li>
+            <li class="nav-item"><a class="nav-link d-none" id="linkRecebimentos" href="recebimentos.html">Recebimentos</a></li>
+            <li class="nav-item"><a class="nav-link" href="grafico.html">Gráficos</a></li>
+            <li class="nav-item"><a class="nav-link d-none" id="linkAssistenteEmpresa" href="assistente-empresarial.html">Assistente IA</a></li>
+          </ul>
+          <span id="nomeEmpresa" class="navbar-text me-lg-3 d-none"></span>
+          <a class="btn btn-outline-light btn-sm" id="linkSair" href="index.html">Sair</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero d-flex align-items-center py-5">
+        <div class="container py-lg-5">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-9">
+              <p class="eyebrow fw-semibold mb-3">Organize. Acompanhe. Decida.</p>
+              <h1 class="display-4 fw-bold mb-3">Sua vida financeira, mais clara em um só lugar.</h1>
+              <p class="lead text-secondary mb-4">O Cashflip ajuda você a registrar despesas e recebimentos, acompanhar pagamentos e visualizar como o dinheiro entra e sai.</p>
+              <div class="d-flex flex-wrap gap-3">
+                <a class="btn btn-cornalina btn-lg px-4" href="despesas.html">Acessar despesas</a>
+                <a class="btn btn-outline-light btn-lg px-4" href="grafico.html">Ver gráficos</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container py-5" id="recursos">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <article class="feature-card rounded-4 p-4 h-100">
+              <div class="feature-number fw-bold mb-3">01 / LANÇAMENTOS</div>
+              <h2 class="h4">Despesas organizadas</h2>
+              <p class="text-secondary mb-0">Registre cada gasto com descrição, categoria, valor, vencimento e status. Edite os lançamentos ou remova o que não precisar mais.</p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="feature-card rounded-4 p-4 h-100">
+              <div class="feature-number fw-bold mb-3">02 / RECEBIMENTOS</div>
+              <h2 class="h4">Entradas no mesmo controle</h2>
+              <p class="text-secondary mb-0">No acesso empresarial, anote vendas, serviços e outros recebimentos, com sua origem, data prevista, valor e confirmação.</p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="feature-card rounded-4 p-4 h-100">
+              <div class="feature-number fw-bold mb-3">03 / VISÃO GERAL</div>
+              <h2 class="h4">Números que ajudam a decidir</h2>
+              <p class="text-secondary mb-0">Consulte gráficos por categoria, compare pagamentos e pendências e acompanhe o saldo entre entradas e despesas empresariais.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="container py-4 py-lg-5">
+        <div class="row align-items-center g-4 g-lg-5">
+          <div class="col-lg-6">
+            <img class="feature-image rounded-4 shadow" src="imagens/controle-financeiro.png" alt="Símbolo de dinheiro diante de um painel de gráficos financeiros" loading="lazy">
+          </div>
+          <div class="col-lg-6">
+            <p class="eyebrow fw-semibold mb-2">Enxergue o fluxo</p>
+            <h2 class="display-6 fw-bold mb-3">Entenda para onde seu dinheiro está indo.</h2>
+            <p class="text-secondary">Com os lançamentos reunidos, fica mais fácil perceber padrões, acompanhar compromissos e ter uma visão mais organizada das finanças.</p>
+            <ul class="list-unstyled d-grid gap-3 mt-4">
+              <li class="d-flex gap-3"><span class="benefit-icon">1</span><span><strong>Categorize os gastos</strong><br><span class="text-secondary">Veja despesas agrupadas por tipo.</span></span></li>
+              <li class="d-flex gap-3"><span class="benefit-icon">2</span><span><strong>Acompanhe vencimentos</strong><br><span class="text-secondary">Diferencie itens pagos dos que estão pendentes.</span></span></li>
+              <li class="d-flex gap-3"><span class="benefit-icon">3</span><span><strong>Explore os gráficos</strong><br><span class="text-secondary">Consulte resumos visuais e evolução dos gastos.</span></span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="container py-4 py-lg-5">
+        <div class="row align-items-center g-4 g-lg-5">
+          <div class="col-lg-6 order-lg-2">
+            <img class="feature-image rounded-4 shadow" src="imagens/planejamento-financeiro.png" alt="Pessoa analisando valores e calculando o orçamento com planilhas e dinheiro" loading="lazy">
+          </div>
+          <div class="col-lg-6 order-lg-1">
+            <p class="eyebrow fw-semibold mb-2">Planejamento com contexto</p>
+            <h2 class="display-6 fw-bold mb-3">Decisões melhores começam com informações organizadas.</h2>
+            <p class="text-secondary">O Cashflip reúne os registros para ajudar no acompanhamento cotidiano, seja para cuidar do orçamento pessoal, seja para manter entradas e saídas de uma empresa sob controle.</p>
+            <div class="feature-card rounded-4 p-4 mt-4">
+              <h3 class="h5">Acesso empresarial</h3>
+              <p class="text-secondary mb-3">Tenha uma conta própria para registrar despesas e recebimentos da empresa e consultar o saldo entre eles.</p>
+              <a class="link-light" id="linkEmpresarial" href="login-empresarial.html">Acessar área empresarial <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container py-5">
+        <div class="cta-panel rounded-4 p-4 p-md-5 text-center">
+          <p class="eyebrow fw-semibold mb-2">Comece pelo próximo lançamento</p>
+          <h2 class="h2 fw-bold">Mais clareza para cuidar do seu dinheiro.</h2>
+          <p class="text-secondary mb-4">Acesse seus registros e mantenha suas finanças em dia.</p>
+          <div class="d-flex justify-content-center flex-wrap gap-3">
+            <a href="despesas.html" class="btn btn-cornalina px-4">Gerenciar despesas</a>
+            <a href="grafico.html" class="btn btn-outline-light px-4">Abrir gráficos</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-4 mt-3">
+      <div class="container d-flex flex-column flex-sm-row justify-content-between gap-2 text-secondary small">
+        <span>Cashflip · Controle financeiro</span>
+        <span>Despesas, recebimentos e acompanhamento em um só lugar.</span>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/notificacoes.js" data-modo="empresarial"></script>
+    <script>
+      const tokenEmpresa = localStorage.getItem("cashflipTokenEmpresarial");
+      if (tokenEmpresa) {
+        const empresaSalva = localStorage.getItem("cashflipEmpresa");
+        if (empresaSalva) {
+          try {
+            const empresa = JSON.parse(empresaSalva);
+            document.getElementById("nomeEmpresa").textContent = empresa.nome || "";
+            document.getElementById("nomeEmpresa").classList.remove("d-none");
+          } catch (erro) {
+            console.error("Não foi possível ler os dados da empresa:", erro);
+          }
+        }
+        document.getElementById("linkRecebimentos").classList.remove("d-none");
+        document.getElementById("linkAssistenteEmpresa").classList.remove("d-none");
+        document.getElementById("linkEmpresarial").classList.add("d-none");
+        const linkSair = document.getElementById("linkSair");
+        linkSair.textContent = "Sair da empresa";
+        linkSair.addEventListener("click", async (evento) => {
+          evento.preventDefault();
+          try {
+            const resposta = await fetch(`${window.CASHFLIP_API_BASE}/empresarial/logout`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${tokenEmpresa}` }
+            });
+            if (!resposta.ok) console.error("A API não confirmou o encerramento da sessão empresarial.");
+          } catch (erro) {
+            console.error("Não foi possível comunicar com a API ao encerrar a sessão:", erro);
+          } finally {
+            localStorage.removeItem("cashflipTokenEmpresarial");
+            localStorage.removeItem("cashflipEmpresa");
+            window.location.href = "index.html";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

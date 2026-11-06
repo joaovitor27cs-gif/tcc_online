@@ -1,0 +1,82 @@
+body {
+  background: #000;
+}
+
+.navbar {
+  background-color: #212529;
+}
+
+.btn-cornalina {
+  background-color: #b31b1b;
+  color: #fff;
+  border: none;
+}
+
+.btn-cornalina:hover {
+  background-color: #8a1515;
+  color: #fff;
+}
+
+.borda-cornalina {
+  border-top: 4px solid #b31b1b !important;
+}
+
+.kpi-valor {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.form-control,
+.form-select {
+  background-color: #242424;
+  color: #fff;
+  border-color: #444;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #242424;
+  color: #fff;
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+}
+
+.table {
+  --bs-table-bg: #212529;
+  --bs-table-color: #f8f9fa;
+  --bs-table-border-color: #495057;
+}
+
+.chat-box {
+  height: 300px;
+  overflow-y: auto;
+  background-color: #121212;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.message-row {
+  display: flex;
+  margin-bottom: .75rem;
+}
+
+.bubble {
+  max-width: 90%;
+  padding: .5rem .75rem;
+  border-radius: .375rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.bubble.bot {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.bubble.user {
+  background-color: #b31b1b;
+  color: #fff;
+  margin-left: auto;
+}

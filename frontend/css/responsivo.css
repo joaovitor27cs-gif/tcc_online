@@ -1,0 +1,103 @@
+html {
+  min-width: 320px;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+img,
+canvas,
+svg,
+video {
+  max-width: 100%;
+}
+
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive > .table {
+  min-width: 38rem;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    padding-block: .5rem;
+  }
+
+  #cashflipNotificacoesPainel {
+    position: fixed;
+    top: 4.5rem;
+    right: .75rem;
+    left: .75rem;
+    width: auto;
+    max-height: calc(100dvh - 5.5rem);
+  }
+}
+
+@media (max-width: 767.98px) {
+  main,
+  .container,
+  .container-fluid {
+    max-width: 100%;
+  }
+
+  .container-fluid {
+    --bs-gutter-x: 1.25rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .table-responsive {
+    margin-inline: -.25rem;
+  }
+
+  .form-label {
+    margin-bottom: .35rem;
+  }
+
+  .input-group > .form-control,
+  .input-group > .form-select,
+  .input-group > .btn {
+    min-width: 0;
+  }
+
+  .display-4 {
+    font-size: clamp(2.25rem, 10vw, 3.5rem);
+  }
+}
+
+@media (max-width: 575.98px) {
+  body {
+    font-size: .95rem;
+  }
+
+  .btn,
+  .nav-link {
+    min-height: 2.75rem;
+  }
+
+  .form-control,
+  .form-select {
+    min-height: 2.75rem;
+    font-size: 1rem;
+  }
+
+  .kpi-valor,
+  .money {
+    font-size: 1.35rem;
+    overflow-wrap: anywhere;
+  }
+
+  .chat-box {
+    min-height: 240px;
+    max-height: 55dvh;
+    padding: .75rem;
+  }
+}

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cashflip - Recebimentos pessoais</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="css/pessoal.css" rel="stylesheet">
+  <link href="css/responsivo.css" rel="stylesheet">
+  <script src="js/api-config.js"></script>
+</head>
+<body class="bg-black">
+  <nav class="navbar navbar-expand-lg bg-dark border-bottom border-secondary">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="painel-pessoal.html">Cashflip <span class="text-danger">Pessoal</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPessoal" aria-controls="navbarPessoal" aria-expanded="false" aria-label="Abrir navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarPessoal">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="painel-pessoal.html">Painel</a></li>
+          <li class="nav-item"><a class="nav-link" href="despesas-pessoais.html">Despesas</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="recebimentos-pessoais.html">Recebimentos</a></li>
+          <li class="nav-item"><a class="nav-link" href="relatorios-pessoais.html">Gráficos</a></li>
+          <li class="nav-item"><a class="nav-link" href="ia-pessoal.html">Assistente IA</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="#" id="sair">Sair</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid mt-4 px-4 pb-4">
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <section class="card bg-dark border-0 shadow borda-cornalina h-100">
+          <div class="card-body">
+            <div class="text-secondary small">Total de recebimentos</div>
+            <div id="totalRecebimentos" class="kpi-valor text-success">Carregando...</div>
+          </div>
+        </section>
+      </div>
+      <div class="col-md-4">
+        <section class="card bg-dark border-0 shadow h-100" style="border-top:4px solid #e74c3c!important">
+          <div class="card-body">
+            <div class="text-secondary small">Total de despesas</div>
+            <div id="totalDespesas" class="kpi-valor text-danger">Carregando...</div>
+          </div>
+        </section>
+      </div>
+      <div class="col-md-4">
+        <section class="card bg-dark border-0 shadow h-100" style="border-top:4px solid #F2C14E!important">
+          <div class="card-body">
+            <div class="text-secondary small">Saldo (recebimentos - despesas)</div>
+            <div id="saldoPessoal" class="kpi-valor">Carregando...</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="card bg-dark shadow-lg border-0 mb-4">
+      <div class="card-body">
+        <h1 class="h4 mb-4" id="tituloForm">Gerenciar recebimentos pessoais</h1>
+        <div id="mensagem" class="alert d-none" role="alert"></div>
+        <form id="formLancamento" class="row g-3 mb-4 border-bottom border-secondary pb-4">
+          <div class="col-md-3">
+            <label class="form-label" for="descricao">Descrição</label>
+            <input id="descricao" type="text" class="form-control" maxlength="200" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label" for="origem">Origem do recebimento</label>
+            <input id="origem" type="text" class="form-control" maxlength="160" required>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label" for="valor">Valor (R$)</label>
+            <input id="valor" type="number" class="form-control" min="0.01" step="0.01" placeholder="0,00" required>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label" for="vencimento">Data prevista</label>
+            <input id="vencimento" type="date" class="form-control" required>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label" for="status">Status</label>
+            <select id="status" class="form-select">
+              <option value="Pendente">Pendente</option>
+              <option value="Pago">Recebido</option>
+            </select>
+          </div>
+          <div class="col-md-4 d-flex align-items-end gap-2">
+            <button id="salvar" type="submit" class="btn btn-cornalina flex-grow-1">Cadastrar recebimento</button>
+            <button id="cancelar" type="button" class="btn btn-outline-light d-none">Cancelar</button>
+          </div>
+        </form>
+
+        <div class="table-responsive">
+          <table class="table table-dark table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Descrição</th><th>Origem</th><th>Data</th><th>Valor</th><th>Status</th><th class="text-end">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="lista">
+              <tr><td colspan="6" class="text-secondary text-center">Carregando recebimentos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/pessoal-comum.js"></script>
+  <script src="js/recebimentos-pessoais.js"></script>
+  <script src="js/notificacoes.js" data-modo="pessoal"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

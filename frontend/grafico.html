@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projeto-Cashflip - Relatórios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="css/responsivo.css" rel="stylesheet" />
+    <script src="js/api-config.js"></script>
+    <style>
+      .btn-cornalina { background-color: #B31B1B; color: white; border: none; }
+      .btn-cornalina:hover { background-color: #8a1515; color: white; }
+      .borda-cornalina { border-top: 4px solid #B31B1B !important; }
+      .grafico-box { position: relative; height: 260px; }
+      .grafico-box.grande { height: 300px; }
+      .titulo-grupo { border-bottom: 1px solid rgba(255,255,255,.12); padding-bottom: .75rem; }
+      .kpi-valor { font-size: 1.6rem; font-weight: 700; }
+      .tabela-scroll { max-height: 320px; overflow-y: auto; }
+      .sem-dados { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; }
+    </style>
+  </head>
+  <body class="bg-black">
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand text-white" href="inicial.html">Cashflip</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="despesas.html">Despesas</a></li>
+            <li class="nav-item"><a id="linkRecebimentos" class="nav-link d-none" href="recebimentos.html">Recebimentos</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="grafico.html">Gráficos</a></li>
+            <li class="nav-item"><a id="linkAssistenteEmpresa" class="nav-link d-none" href="assistente-empresarial.html">Assistente IA</a></li>
+          </ul>
+          <div class="d-flex flex-column flex-lg-row align-items-lg-center">
+            <span id="nomeEmpresa" class="navbar-text me-lg-3 d-none"></span>
+            <a id="linkSair" class="nav-link" href="index.html">Sair</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-4 px-4 pb-4">
+
+      <!-- Aviso de erro de conexão com a API -->
+      <div id="erroApi" class="alert alert-danger d-none" role="alert">
+        Não foi possível carregar os dados. Verifique se o backend está em execução e se este dispositivo está na mesma rede do computador.
+      </div>
+
+      <!-- Indicadores -->
+      <div class="row g-3 mb-4">
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="card bg-dark border-0 shadow borda-cornalina h-100">
+            <div class="card-body">
+              <div class="text-secondary small">Total de despesas</div>
+              <div class="kpi-valor" id="kpiTotal">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="card bg-dark border-0 shadow h-100" style="border-top: 4px solid #2ecc71 !important;">
+            <div class="card-body">
+              <div class="text-secondary small">Pago</div>
+              <div class="kpi-valor text-success" id="kpiPago">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="card bg-dark border-0 shadow h-100" style="border-top: 4px solid #F2C14E !important;">
+            <div class="card-body">
+              <div class="text-secondary small">Pendente</div>
+              <div class="kpi-valor text-warning" id="kpiPendente">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="card bg-dark border-0 shadow h-100" style="border-top: 4px solid #3FA7D6 !important;">
+            <div class="card-body">
+              <div class="text-secondary small">Total de recebimentos</div>
+              <div class="kpi-valor" id="kpiRecebimentos">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="card bg-dark border-0 shadow h-100" style="border-top: 4px solid #2ecc71 !important;">
+            <div class="card-body">
+              <div class="text-secondary small">Recebido</div>
+              <div class="kpi-valor text-success" id="kpiRecebido">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+          <div class="card bg-dark border-0 shadow h-100" style="border-top: 4px solid #F2C14E !important;">
+            <div class="card-body">
+              <div class="text-secondary small">A receber</div>
+              <div class="kpi-valor text-warning" id="kpiAReceber">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12">
+          <div class="card bg-dark shadow border-0 h-100">
+            <div class="card-body">
+              <h5 class="card-title text-center mb-4">Análise financeira empresarial</h5>
+
+              <section class="mb-4" aria-labelledby="tituloGraficosDespesas">
+                <h6 id="tituloGraficosDespesas" class="titulo-grupo text-danger mb-3">Despesas</h6>
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="text-center text-secondary small mb-2">Gastos por categoria</div>
+                    <div class="grafico-box bg-black rounded p-2">
+                      <canvas id="graficoCategorias"></canvas>
+                      <span class="sem-dados text-secondary" id="vazioCategorias">Sem despesas cadastradas</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="text-center text-secondary small mb-2">Despesas pagas x pendentes</div>
+                    <div class="grafico-box bg-black rounded p-2">
+                      <canvas id="graficoStatus"></canvas>
+                      <span class="sem-dados text-secondary" id="vazioStatus">Sem despesas cadastradas</span>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="text-center text-secondary small mb-2">Evolução mensal das despesas (por vencimento)</div>
+                    <div class="grafico-box grande bg-black rounded p-2">
+                      <canvas id="graficoMensal"></canvas>
+                      <span class="sem-dados text-secondary" id="vazioMensal">Sem despesas cadastradas</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section aria-labelledby="tituloGraficosRecebimentos">
+                <h6 id="tituloGraficosRecebimentos" class="titulo-grupo text-success mb-3">Recebimentos</h6>
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="text-center text-secondary small mb-2">Recebimentos por cliente / origem</div>
+                    <div class="grafico-box bg-black rounded p-2">
+                      <canvas id="graficoOrigens"></canvas>
+                      <span class="sem-dados text-secondary" id="vazioOrigens">Sem recebimentos cadastrados</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="text-center text-secondary small mb-2">Recebidos x pendentes</div>
+                    <div class="grafico-box bg-black rounded p-2">
+                      <canvas id="graficoStatusRecebimentos"></canvas>
+                      <span class="sem-dados text-secondary" id="vazioStatusRecebimentos">Sem recebimentos cadastrados</span>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="text-center text-secondary small mb-2">Evolução mensal dos recebimentos (por data)</div>
+                    <div class="grafico-box grande bg-black rounded p-2">
+                      <canvas id="graficoMensalRecebimentos"></canvas>
+                      <span class="sem-dados text-secondary" id="vazioMensalRecebimentos">Sem recebimentos cadastrados</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Tabela Resumo -->
+        <div class="col-12">
+          <div class="card bg-dark shadow border-0">
+            <div class="card-body">
+              <h5 class="card-title mb-3">Resumo de Despesas</h5>
+              <div class="table-responsive tabela-scroll">
+                <table class="table table-dark table-sm table-hover align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th>Descrição</th>
+                      <th>Categoria</th>
+                      <th>Vencimento</th>
+                      <th class="text-end">Valor</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabelaResumo">
+                    <tr><td colspan="5" class="text-secondary text-center">Carregando...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="js/grafico.js"></script>
+    <script src="js/notificacoes.js" data-modo="empresarial"></script>
+  </body>
+</html>

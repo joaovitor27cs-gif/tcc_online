@@ -1,0 +1,18 @@
+const ENDPOINT=`${API_PESSOAL}/despesas`;let editando=null;const form=document.getElementById('formLancamento'),lista=document.getElementById('lista'),msg=document.getElementById('mensagem'),btn=document.getElementById('salvar'),cancelar=document.getElementById('cancelar');
+function aviso(t,tipo='danger'){msg.className=`alert alert-${tipo}`;msg.textContent=t}
+async function carregarCategorias(){const cats=await apiPessoal(`${window.CASHFLIP_API_BASE}/categorias`);const sel=document.getElementById('categoria_id');sel.innerHTML=cats.map(c=>`<option value="${c.id}">${escaparPessoal(c.nome)}</option>`).join('')}
+async function carregar(){
+  const itens=await apiPessoal(ENDPOINT);
+  const total=itens.reduce((soma,item)=>soma+Number(item.valor||0),0);
+  const pago=itens.filter(item=>item.status==='Pago').reduce((soma,item)=>soma+Number(item.valor||0),0);
+  document.getElementById('totalDespesas').textContent=dinheiroPessoal(total);
+  document.getElementById('despesasPagas').textContent=dinheiroPessoal(pago);
+  document.getElementById('despesasPendentes').textContent=dinheiroPessoal(total-pago);
+  if(!itens.length){lista.innerHTML='<tr><td colspan="6" class="text-secondary text-center">Nenhuma despesa cadastrada.</td></tr>';window.itensPessoais=[];return}
+  lista.innerHTML=itens.map(item=>`<tr><td>${escaparPessoal(item.descricao)}</td><td>${escaparPessoal(item.categoria)}</td><td>${dataPessoal(item.vencimento)}</td><td>${dinheiroPessoal(item.valor)}</td><td><span class="badge ${item.status==='Pago'?'bg-success':'bg-secondary'}">${escaparPessoal(item.status)}</span></td><td class="text-end text-nowrap"><button class="btn btn-sm btn-outline-light me-1" data-edit="${item.id}">Editar</button><button class="btn btn-sm btn-outline-danger" data-del="${item.id}">Remover</button></td></tr>`).join('');
+  window.itensPessoais=itens
+}
+function resetar(){editando=null;form.reset();document.getElementById('status').value='Pendente';document.getElementById('tituloForm').textContent='Nova despesa';btn.textContent='Cadastrar despesa';cancelar.classList.add('d-none')}
+form.addEventListener('submit',async e=>{e.preventDefault();btn.disabled=true;try{const payload={descricao:document.getElementById('descricao').value.trim(),categoria_id:Number(document.getElementById('categoria_id').value),valor:Number(document.getElementById('valor').value),vencimento:document.getElementById('vencimento').value,status:document.getElementById('status').value};await apiPessoal(editando?`${ENDPOINT}/${editando}`:ENDPOINT,{method:editando?'PUT':'POST',body:JSON.stringify(payload)});resetar();await carregar();aviso('Registro salvo com sucesso.','success')}catch(e){aviso(e.message)}finally{btn.disabled=false}});
+lista.addEventListener('click',async e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-del]');try{if(ed){const item=(window.itensPessoais||[]).find(x=>x.id===Number(ed.dataset.edit));if(!item)return;editando=item.id;for(const k of Object.keys(item)){const el=document.getElementById(k);if(el&&el.tagName!=='SELECT')el.value=item[k]??'';else if(el)el.value=String(item[k]??'')}document.getElementById('tituloForm').textContent='Editar lançamento';btn.textContent='Salvar alterações';cancelar.classList.remove('d-none');form.scrollIntoView({behavior:'smooth'})}else if(del&&confirm('Deseja realmente excluir este registro?')){await apiPessoal(`${ENDPOINT}/${del.dataset.del}`,{method:'DELETE'});await carregar();aviso('Registro excluído.','success')}}catch(err){aviso(err.message)}});
+cancelar.addEventListener('click',resetar);(async()=>{try{await carregarCategorias();await carregar()}catch(e){aviso(e.message);lista.innerHTML='<tr><td colspan="6" class="text-center">Não foi possível carregar os registros.</td></tr>'}})();

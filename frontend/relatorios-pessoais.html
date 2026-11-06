@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cashflip - Gráficos pessoais</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="css/pessoal.css" rel="stylesheet">
+  <link href="css/responsivo.css" rel="stylesheet">
+  <script src="js/api-config.js"></script>
+  <style>
+    .grafico-box { position: relative; height: 260px; }
+    .grafico-box.grande { height: 300px; }
+    .titulo-grupo { border-bottom: 1px solid rgba(255,255,255,.12); padding-bottom: .75rem; }
+    .tabela-scroll { max-height: 320px; overflow-y: auto; }
+    .sem-dados { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body class="bg-black">
+  <nav class="navbar navbar-expand-lg bg-dark border-bottom border-secondary">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="painel-pessoal.html">Cashflip <span class="text-danger">Pessoal</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPessoal" aria-controls="navbarPessoal" aria-expanded="false" aria-label="Abrir navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarPessoal">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="painel-pessoal.html">Painel</a></li>
+          <li class="nav-item"><a class="nav-link" href="despesas-pessoais.html">Despesas</a></li>
+          <li class="nav-item"><a class="nav-link" href="recebimentos-pessoais.html">Recebimentos</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="relatorios-pessoais.html">Gráficos</a></li>
+          <li class="nav-item"><a class="nav-link" href="ia-pessoal.html">Assistente IA</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="#" id="sair">Sair</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid mt-4 px-4 pb-4">
+    <div class="mb-4">
+      <p class="text-danger mb-1">ÁREA PESSOAL</p>
+      <h1 class="h2 mb-1">Gráficos financeiros</h1>
+      <p class="text-secondary mb-0">Acompanhe despesas e recebimentos registrados na sua conta pessoal.</p>
+    </div>
+
+    <div id="erro" class="alert alert-danger d-none" role="alert"></div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-xl-2 col-md-4 col-6">
+        <section class="card bg-dark border-0 shadow borda-cornalina h-100">
+          <div class="card-body">
+            <div class="text-secondary small">Total de despesas</div>
+            <div class="kpi-valor" id="kpiTotalDespesas">—</div>
+          </div>
+        </section>
+      </div>
+      <div class="col-xl-2 col-md-4 col-6">
+        <section class="card bg-dark border-0 shadow h-100" style="border-top:4px solid #2ecc71!important">
+          <div class="card-body">
+            <div class="text-secondary small">Pago</div>
+            <div class="kpi-valor text-success" id="kpiDespesasPagas">—</div>
+          </div>
+        </section>
+      </div>
+      <div class="col-xl-2 col-md-4 col-6">
+        <section class="card bg-dark border-0 shadow h-100" style="border-top:4px solid #F2C14E!important">
+          <div class="card-body">
+            <div class="text-secondary small">Pendente</div>
+            <div class="kpi-valor text-warning" id="kpiDespesasPendentes">—</div>
+          </div>
+        </section>
+      </div>
+      <div class="col-xl-2 col-md-4 col-6">
+        <section class="card bg-dark border-0 shadow h-100" style="border-top:4px solid #3FA7D6!important">
+          <div class="card-body">
+            <div class="text-secondary small">Total de recebimentos</div>
+            <div class="kpi-valor" id="kpiTotalRecebimentos">—</div>
+          </div>
+        </section>
+      </div>
+      <div class="col-xl-2 col-md-4 col-6">
+        <section class="card bg-dark border-0 shadow h-100" style="border-top:4px solid #2ecc71!important">
+          <div class="card-body">
+            <div class="text-secondary small">Recebido</div>
+            <div class="kpi-valor text-success" id="kpiRecebimentosPagos">—</div>
+          </div>
+        </section>
+      </div>
+      <div class="col-xl-2 col-md-4 col-6">
+        <section class="card bg-dark border-0 shadow h-100" style="border-top:4px solid #F2C14E!important">
+          <div class="card-body">
+            <div class="text-secondary small">A receber</div>
+            <div class="kpi-valor text-warning" id="kpiRecebimentosPendentes">—</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="card bg-dark shadow border-0 mb-4">
+      <div class="card-body">
+        <h2 class="h5 text-center mb-4">Análise financeira pessoal</h2>
+
+        <section class="mb-4" aria-labelledby="tituloGraficosDespesas">
+          <h3 id="tituloGraficosDespesas" class="h6 titulo-grupo text-danger mb-3">Despesas</h3>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="text-center text-secondary small mb-2">Gastos por categoria</div>
+              <div class="grafico-box bg-black rounded p-2">
+                <canvas id="graficoCategorias"></canvas>
+                <span class="sem-dados text-secondary" id="vazioCategorias">Sem despesas cadastradas</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-center text-secondary small mb-2">Despesas pagas x pendentes</div>
+              <div class="grafico-box bg-black rounded p-2">
+                <canvas id="graficoStatusDespesas"></canvas>
+                <span class="sem-dados text-secondary" id="vazioStatusDespesas">Sem despesas cadastradas</span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="text-center text-secondary small mb-2">Evolução mensal das despesas (por vencimento)</div>
+              <div class="grafico-box grande bg-black rounded p-2">
+                <canvas id="graficoMensalDespesas"></canvas>
+                <span class="sem-dados text-secondary" id="vazioMensalDespesas">Sem despesas cadastradas</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="tituloGraficosRecebimentos">
+          <h3 id="tituloGraficosRecebimentos" class="h6 titulo-grupo text-success mb-3">Recebimentos</h3>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="text-center text-secondary small mb-2">Recebimentos por origem</div>
+              <div class="grafico-box bg-black rounded p-2">
+                <canvas id="graficoOrigens"></canvas>
+                <span class="sem-dados text-secondary" id="vazioOrigens">Sem recebimentos cadastrados</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-center text-secondary small mb-2">Recebidos x pendentes</div>
+              <div class="grafico-box bg-black rounded p-2">
+                <canvas id="graficoStatusRecebimentos"></canvas>
+                <span class="sem-dados text-secondary" id="vazioStatusRecebimentos">Sem recebimentos cadastrados</span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="text-center text-secondary small mb-2">Evolução mensal dos recebimentos (por data)</div>
+              <div class="grafico-box grande bg-black rounded p-2">
+                <canvas id="graficoMensalRecebimentos"></canvas>
+                <span class="sem-dados text-secondary" id="vazioMensalRecebimentos">Sem recebimentos cadastrados</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div class="row g-4">
+      <div class="col-xl-6">
+        <section class="card bg-dark shadow border-0 h-100">
+          <div class="card-body">
+            <h2 class="h5 mb-3">Resumo de despesas</h2>
+            <div class="table-responsive tabela-scroll">
+              <table class="table table-dark table-sm table-hover align-middle mb-0">
+                <thead><tr><th>Descrição</th><th>Categoria</th><th>Vencimento</th><th class="text-end">Valor</th><th>Status</th></tr></thead>
+                <tbody id="tabelaDespesas"><tr><td colspan="5" class="text-secondary text-center">Carregando...</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="col-xl-6">
+        <section class="card bg-dark shadow border-0 h-100">
+          <div class="card-body">
+            <h2 class="h5 mb-3">Resumo de recebimentos</h2>
+            <div class="table-responsive tabela-scroll">
+              <table class="table table-dark table-sm table-hover align-middle mb-0">
+                <thead><tr><th>Descrição</th><th>Origem</th><th>Data</th><th class="text-end">Valor</th><th>Status</th></tr></thead>
+                <tbody id="tabelaRecebimentos"><tr><td colspan="5" class="text-secondary text-center">Carregando...</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/pessoal-comum.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="js/relatorios-pessoais.js"></script>
+  <script src="js/notificacoes.js" data-modo="pessoal"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

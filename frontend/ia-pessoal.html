@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cashflip - Assistente IA pessoal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="css/pessoal.css" rel="stylesheet">
+  <link href="css/responsivo.css" rel="stylesheet">
+  <script src="js/api-config.js"></script>
+</head>
+<body class="bg-black">
+  <nav class="navbar navbar-expand-lg bg-dark border-bottom border-secondary">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="painel-pessoal.html">Cashflip <span class="text-danger">Pessoal</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPessoal" aria-controls="navbarPessoal" aria-expanded="false" aria-label="Abrir navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarPessoal">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="painel-pessoal.html">Painel</a></li>
+          <li class="nav-item"><a class="nav-link" href="despesas-pessoais.html">Despesas</a></li>
+          <li class="nav-item"><a class="nav-link" href="recebimentos-pessoais.html">Recebimentos</a></li>
+          <li class="nav-item"><a class="nav-link" href="relatorios-pessoais.html">Gráficos</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="ia-pessoal.html">Assistente IA</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="#" id="sair">Sair</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid mt-4 px-4 pb-4">
+    <div class="row g-4">
+      <div class="col-xl-8 col-lg-10 mx-auto">
+        <section class="card bg-dark shadow border-0 borda-cornalina">
+          <div class="card-body p-4 p-lg-5">
+            <p class="text-danger small mb-1">ÁREA PESSOAL</p>
+            <h1 class="h3 card-title mb-2">Assistente IA</h1>
+            <p class="text-secondary mb-4">Converse sobre suas despesas e seus recebimentos pessoais.</p>
+            <div class="chat-box mb-3" id="chat" aria-live="polite">
+              <div class="text-secondary small mb-2">IA Cashflip:</div>
+              <div class="message-row"><div class="bubble bot">Olá! Posso ajudar a analisar suas despesas e seus recebimentos pessoais.</div></div>
+            </div>
+            <div id="aviso" class="alert d-none py-2" role="alert"></div>
+            <form id="formPergunta">
+              <label for="mensagem" class="form-label">Sua pergunta</label>
+              <div class="input-group">
+                <input id="mensagem" maxlength="2000" class="form-control" placeholder="Pergunte sobre suas finanças..." required>
+                <button id="enviar" class="btn btn-cornalina" type="submit">Enviar</button>
+              </div>
+            </form>
+            <hr class="border-secondary my-4">
+            <h2 class="h6 mb-3">Sugestões para começar</h2>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <button type="button" class="btn btn-outline-light btn-sm sugestao">Analise meus gastos</button>
+              <button type="button" class="btn btn-outline-light btn-sm sugestao">Como posso economizar?</button>
+              <button type="button" class="btn btn-outline-light btn-sm sugestao">Explique meu saldo atual</button>
+            </div>
+            <div class="small text-secondary">O assistente consulta somente os dados financeiros da sua conta pessoal e os envia ao Google Gemini para gerar a resposta. Não altera nem cadastra lançamentos.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script src="js/pessoal-comum.js"></script>
+  <script src="js/ia-pessoal.js"></script>
+  <script src="js/notificacoes.js" data-modo="pessoal"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body></html>

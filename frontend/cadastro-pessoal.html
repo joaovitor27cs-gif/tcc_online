@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cashflip - Criar conta pessoal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/responsivo.css" rel="stylesheet">
+    <script src="js/api-config.js"></script>
+    <style>
+      body { background: #090909; color: #f8f9fa; }
+      .navbar, .panel { background: #171717; }
+      .btn-red { background: #b31b1b; color: white; }
+      .btn-red:hover { background: #941616; color: white; }
+      .muted { color: #adb5bd; }
+      .card { background: #171717; color: #f8f9fa; border: 1px solid #333; }
+      .form-control, .form-select { background: #242424; color: #fff; border-color: #444; }
+      .form-control:focus, .form-select:focus { background: #242424; color: #fff; }
+      .table { --bs-table-bg: #171717; --bs-table-color: #f8f9fa; --bs-table-border-color: #333; }
+      .nav-link { color: #ddd; }
+      .nav-link:hover { color: #fff; }
+      .money { font-size: 1.6rem; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar border-bottom border-secondary">
+      <div class="container">
+        <a class="navbar-brand text-white" href="index.html">Cashflip</a>
+        <a class="nav-link" href="login.html">Já tenho conta</a>
+      </div>
+    </nav>
+    <main class="container d-flex align-items-center justify-content-center py-5" style="min-height: 90vh">
+      <section class="card p-4 p-md-5 w-100" style="max-width: 480px">
+        <h1 class="h3 mb-2">Crie sua conta pessoal</h1>
+        <p class="muted mb-4">Organize suas despesas e recebimentos em um espaço só seu.</p>
+        <div id="msg" class="alert d-none" role="alert"></div>
+        <form id="cadastro">
+          <div class="mb-3">
+            <label class="form-label" for="nome">Nome completo</label>
+            <input id="nome" class="form-control" required minlength="2" autocomplete="name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="email">E-mail</label>
+            <input id="email" type="email" class="form-control" required autocomplete="email">
+          </div>
+          <div class="mb-4">
+            <label class="form-label" for="senha">Senha (mínimo 8 caracteres)</label>
+            <input id="senha" type="password" class="form-control" required minlength="8" autocomplete="new-password">
+          </div>
+          <button class="btn btn-red w-100 py-2">Criar conta</button>
+        </form>
+      </section>
+    </main>
+    <script>
+      document.getElementById("cadastro").addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+        const mensagem = document.getElementById("msg");
+        const botao = evento.currentTarget.querySelector("button");
+        botao.disabled = true;
+        try {
+          const resposta = await fetch(`${window.CASHFLIP_API_BASE}/pessoal/cadastro`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nome: document.getElementById("nome").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              senha: document.getElementById("senha").value
+            })
+          });
+          const dados = await resposta.json();
+          if (!resposta.ok) throw new Error(dados.erro || "Falha no cadastro");
+          mensagem.className = "alert alert-success";
+          mensagem.textContent = `${dados.mensagem} Redirecionando para o login...`;
+          setTimeout(() => { location.href = "login.html"; }, 1000);
+        } catch (erro) {
+          mensagem.className = "alert alert-danger";
+          mensagem.textContent = erro.message;
+        } finally {
+          botao.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

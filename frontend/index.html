@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Organize suas finanças pessoais ou empresariais com o Cashflip." />
+    <title>Cashflip - Controle financeiro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="css/responsivo.css" rel="stylesheet" />
+    <script src="js/api-config.js"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --cashflip-red: #b31b1b;
+        --cashflip-red-light: #f08080;
+        --cashflip-bg: #08090a;
+        --cashflip-panel: #151719;
+        --cashflip-muted: #a7adb4;
+      }
+
+      body {
+        min-height: 100vh;
+        color: #f8f9fa;
+        background:
+          radial-gradient(ellipse at 75% 35%, rgba(179, 27, 27, .12), transparent 38%),
+          var(--cashflip-bg);
+      }
+
+      .navbar {
+        background-color: rgba(31, 34, 37, .88);
+        backdrop-filter: blur(12px);
+      }
+
+      .navbar-brand {
+        letter-spacing: -.04em;
+      }
+
+      .brand-mark {
+        display: inline-grid;
+        width: 2rem;
+        height: 2rem;
+        place-items: center;
+        margin-right: .55rem;
+        border-radius: .65rem;
+        background: var(--cashflip-red);
+        font-size: 1.1rem;
+        font-weight: 800;
+        vertical-align: middle;
+      }
+
+      .hero {
+        min-height: min(690px, calc(100vh - 70px));
+        padding-block: 5rem;
+      }
+
+      .eyebrow {
+        color: var(--cashflip-red-light);
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+
+      .hero-title {
+        max-width: 720px;
+        font-size: clamp(2.8rem, 6vw, 5rem);
+        letter-spacing: -.055em;
+        line-height: 1.04;
+      }
+
+      .hero-copy {
+        max-width: 540px;
+        color: var(--cashflip-muted);
+        font-size: 1.1rem;
+        line-height: 1.75;
+      }
+
+      .btn-cornalina {
+        border: 1px solid var(--cashflip-red);
+        background-color: var(--cashflip-red);
+        color: #fff;
+        transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+      }
+
+      .btn-cornalina:hover {
+        border-color: #941616;
+        background-color: #941616;
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-light,
+      .btn-outline-secondary {
+        transition: background-color .2s ease, transform .2s ease;
+      }
+
+      .btn-outline-light:hover,
+      .btn-outline-secondary:hover {
+        transform: translateY(-2px);
+      }
+
+      .visual-wrap {
+        position: relative;
+        max-width: 490px;
+        margin-inline: auto;
+        padding: 1.2rem;
+      }
+
+      .visual-glow {
+        position: absolute;
+        inset: 12% 8%;
+        border-radius: 50%;
+        background: rgba(179, 27, 27, .28);
+        filter: blur(75px);
+        pointer-events: none;
+      }
+
+      .preview-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 1.4rem;
+        background: linear-gradient(145deg, #202326, #111315 72%);
+        box-shadow: 0 2rem 5rem rgba(0,0,0,.4);
+        transform: rotate(1.5deg);
+      }
+
+      .preview-topline {
+        height: 4px;
+        background: linear-gradient(90deg, var(--cashflip-red), #e05b5b 42%, transparent);
+      }
+
+      .preview-label {
+        color: #a7adb4;
+        font-size: .85rem;
+      }
+
+      .preview-chart {
+        display: flex;
+        height: 150px;
+        align-items: end;
+        gap: 12px;
+        padding: 1.25rem 1rem .25rem;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        background: repeating-linear-gradient(to bottom, transparent 0, transparent 36px, rgba(255,255,255,.055) 37px, transparent 38px);
+      }
+
+      .preview-bar {
+        flex: 1;
+        border-radius: 7px 7px 2px 2px;
+        background: linear-gradient(180deg, #dc5555, var(--cashflip-red) 85%);
+        opacity: .9;
+      }
+
+      .preview-bar:nth-child(1) { height: 38%; }
+      .preview-bar:nth-child(2) { height: 62%; }
+      .preview-bar:nth-child(3) { height: 48%; }
+      .preview-bar:nth-child(4) { height: 78%; }
+      .preview-bar:nth-child(5) { height: 58%; }
+      .preview-bar:nth-child(6) { height: 92%; }
+      .preview-bar:nth-child(7) { height: 70%; }
+
+      .preview-pill {
+        width: 78px;
+        height: 8px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.12);
+      }
+
+      .preview-pill.short { width: 46px; }
+
+      .feature-strip {
+        border-top: 1px solid rgba(255,255,255,.08);
+        background: rgba(21, 23, 25, .6);
+      }
+
+      .feature-item {
+        display: flex;
+        height: 100%;
+        gap: 1rem;
+        align-items: flex-start;
+        padding: 1.25rem;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 1rem;
+        background: rgba(21, 23, 25, .8);
+      }
+
+      .feature-icon {
+        display: grid;
+        width: 2.75rem;
+        height: 2.75rem;
+        flex: 0 0 2.75rem;
+        place-items: center;
+        border-radius: .85rem;
+        background: rgba(179,27,27,.2);
+        color: #ff9696;
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+
+      .text-secondary {
+        color: var(--cashflip-muted) !important;
+      }
+
+      @media (max-width: 991.98px) {
+        .hero { min-height: auto; }
+        .visual-wrap { max-width: 430px; }
+      }
+
+      @media (max-width: 575.98px) {
+        .hero { padding-block: 3.5rem; }
+        .hero-title { font-size: clamp(2.6rem, 12vw, 3.6rem); }
+        .visual-wrap { padding: .5rem; }
+        .preview-chart { height: 125px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom border-secondary sticky-top">
+      <div class="container py-1">
+        <a class="navbar-brand fw-semibold" href="index.html">
+          <span class="brand-mark" aria-hidden="true">C</span>Cashflip
+        </a>
+        <a class="btn btn-outline-light btn-sm" href="login.html">Acessar conta <span aria-hidden="true">→</span></a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero d-flex align-items-center">
+        <div class="container">
+          <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+              <p class="eyebrow mb-3">Mais clareza para suas finanças</p>
+              <h1 class="hero-title fw-bold mb-4">Seu dinheiro merece um plano melhor.</h1>
+              <p class="hero-copy mb-4">Um jeito simples de organizar despesas, acompanhar recebimentos e tomar decisões com mais confiança.</p>
+              <div class="d-flex flex-wrap gap-3">
+                <a href="login.html" class="btn btn-cornalina btn-lg px-4 py-3">Entrar como pessoa física</a>
+                <a href="cadastro-pessoal.html" class="btn btn-outline-light btn-lg px-4 py-3">Criar conta pessoal</a>
+              </div>
+              <div class="mt-4">
+                <a href="login-empresarial.html" class="btn btn-outline-secondary px-4 py-3">Acesso empresarial <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="visual-wrap" aria-hidden="true">
+                <div class="visual-glow"></div>
+                <div class="preview-card">
+                  <div class="preview-topline"></div>
+                  <div class="p-4 p-sm-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                      <div>
+                        <div class="preview-label mb-2">Seu controle financeiro</div>
+                        <div class="preview-pill"></div>
+                      </div>
+                      <div class="feature-icon">↗</div>
+                    </div>
+                    <div class="preview-chart">
+                      <span class="preview-bar"></span><span class="preview-bar"></span>
+                      <span class="preview-bar"></span><span class="preview-bar"></span>
+                      <span class="preview-bar"></span><span class="preview-bar"></span>
+                      <span class="preview-bar"></span>
+                    </div>
+                    <div class="d-flex justify-content-between pt-3">
+                      <span class="preview-pill short"></span><span class="preview-pill short"></span>
+                      <span class="preview-pill short"></span><span class="preview-pill short"></span>
+                    </div>
+                    <div class="d-flex gap-2 mt-4">
+                      <span class="preview-pill"></span><span class="preview-pill short"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature-strip py-4 py-lg-5">
+        <div class="container">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <article class="feature-item">
+                <span class="feature-icon" aria-hidden="true">−</span>
+                <div><h2 class="h6 fw-bold mb-1">Despesas organizadas</h2><p class="text-secondary small mb-0">Registre seus gastos e acompanhe cada compromisso.</p></div>
+              </article>
+            </div>
+            <div class="col-md-4">
+              <article class="feature-item">
+                <span class="feature-icon" aria-hidden="true">+</span>
+                <div><h2 class="h6 fw-bold mb-1">Entradas sob controle</h2><p class="text-secondary small mb-0">Mantenha seus recebimentos em um só lugar.</p></div>
+              </article>
+            </div>
+            <div class="col-md-4">
+              <article class="feature-item">
+                <span class="feature-icon" aria-hidden="true">↗</span>
+                <div><h2 class="h6 fw-bold mb-1">Visão mais clara</h2><p class="text-secondary small mb-0">Consulte gráficos e entenda melhor suas finanças.</p></div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  </body>
+</html>
